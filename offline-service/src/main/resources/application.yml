@@ -1,0 +1,42 @@
+server: 
+  port: ${HOSTPOST:8888}
+spring: 
+  application:
+    name: offline-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.sqlite.JDBC
+    #FIXME CXL-此处本地测试用绝对路径：账号是：a2/888
+    #url: ${JDBCURL:jdbc:sqlite:../offline}
+    url: ${JDBCURL:jdbc:sqlite:D:\sqlite\offline/offline}
+    #url: jdbc:sqlite::resource:db/px.db 
+    username: 
+    password: 
+    druid:
+      # 连接池初始化大小
+      initial-size: 8
+      # 最大活跃连接数
+      max-active: 20
+      # 最小空闲连接数
+      min-idle: 1
+      # 获取连接等待超时的时间
+      max-wait: 60000
+      # 间隔多久才进行一次检测，检测需要关闭的空闲连接，ms
+      time-between-eviction-runs-millis: 60000
+      validation-query: select 'x'
+      # 配置过滤器，https://github.com/alibaba/druid/wiki/%E5%86%85%E7%BD%AEFilter%E7%9A%84%E5%88%AB%E5%90%8D
+      filters: stat   
+    
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: false  # 驼峰下划线转换
+    cache-enabled: false
+    call-setters-on-nulls: true 
+  global-config:
+    banner: false                        # 去除mybatis plus banner
+    db-config:
+      id-type: assign-uuid      
+logging:
+  level:
+    com.pde.pdes.offline.mapper: debug
